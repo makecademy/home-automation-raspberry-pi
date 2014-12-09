@@ -1,11 +1,22 @@
+// Imports
 var sensorLib = require('node-dht-sensor');
 var express = require('express');
 var app = express();
 var piREST = require('pi-arest')(app);
 
+// View engine
+app.set('view engine', 'jade');
+
+// Raspberry Pi name & ID
 piREST.set_id('1');
 piREST.set_name('my_RPi');
 
+// Interface routes
+app.get('/interface', function(req, res){
+  res.render('interface');
+});
+
+// DHT sensor
 var dht_sensor = {
     initialize: function () {
         return sensorLib.initialize(11, 23);
@@ -30,6 +41,7 @@ if (dht_sensor.initialize()) {
     console.warn('Failed to initialize sensor');
 }
 
+// Start server
 var server = app.listen(3000, function() {
     console.log('Listening on port %d', server.address().port);
 });
