@@ -8,7 +8,7 @@ piREST.set_name('my_RPi');
 
 var dht_sensor = {
     initialize: function () {
-        return sensorLib.initialize(11, 4);
+        return sensorLib.initialize(11, 23);
     },
     read: function () {
         var readout = sensorLib.read();
