@@ -2,19 +2,24 @@
 var sensorLib = require('node-dht-sensor');
 var express = require('express');
 var app = express();
-var piREST = require('pi-arest')(app);
 
 // View engine
 app.set('view engine', 'jade');
 
-// Raspberry Pi name & ID
-piREST.set_id('1');
-piREST.set_name('my_RPi');
+// Set public folder
+app.use(express.static(__dirname + '/public'));
 
 // Interface routes
 app.get('/interface', function(req, res){
   res.render('interface');
 });
+
+// pi-aREST
+var piREST = require('pi-arest')(app);
+
+// Raspberry Pi name & ID
+piREST.set_id('1');
+piREST.set_name('my_RPi');
 
 // DHT sensor
 var dht_sensor = {
