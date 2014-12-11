@@ -4,9 +4,6 @@ $(document).ready(function() {
   // Configure XBee sensors
   $.get('/devices', function( devices ) {
 
-    // Check if XBee
-    if (devices[i].type == 'xbee') {
-
       // Set inputs
       for (i = 0; i < devices.length; i++){
 
@@ -14,8 +11,10 @@ $(document).ready(function() {
         var device = devices[i];
 
         // Set input
-        $.get('/' + device.name + '/mode/8/i');
-
+        if (device.type == 'xbee') {
+		  $.get('/' + device.name + '/mode/8/i');
+		}
+       
       }
 
       setInterval(function() {
@@ -26,6 +25,7 @@ $(document).ready(function() {
           var device = devices[i];
 
           // Get data
+          if (device.type == 'xbee') {
           $.get('/' + device.name + '/digital/8', function(json_data) {
 
               // Update display  
@@ -39,20 +39,19 @@ $(document).ready(function() {
               }    
             
           });
+	     }
         }
 
       }, 2000);
 
-    }
-
   });
 
   // Click on buttons
-  $("#1").click(function() {
+  $("#on").click(function() {
     $.get('/my_RPi/digital/12/1');
   });
 
-  $("#2").click(function() {
+  $("#off").click(function() {
     $.get('/my_RPi/digital/12/0');
   });
   
@@ -60,21 +59,21 @@ $(document).ready(function() {
   refreshSensors();
   setInterval(refreshSensors, 5000);
   
-  // // Refresh camera picture
-  // setInterval(function() {
+  // Refresh camera picture
+  setInterval(function() {
     
-  //   // Take picture
-  //   $.get("/camera/snapshot");
+    // Take picture
+    $.get("/my_RPi/camera/snapshot");
   
-  // }, 10000);
+  }, 10000);
   
-  // setInterval(function() {
+  setInterval(function() {
  
-  //   // Reload picture
-  //   d = new Date();
-  //   $("#camera").attr("src","/pictures/image.jpg?" + d.getTime());
-  
-  // }, 1000);
+    // Reload picture
+    d = new Date();
+    $("#camera").attr("src","http://192.168.1.103/pictures/image.jpg?" + d.getTime());
+   
+  }, 1000);
 
 });
 

@@ -13,9 +13,9 @@ html
         .col-md-4
           div Lamp
         .col-md-4
-          button.btn.btn-block.btn-lg.btn-primary#1 On
+          button.btn.btn-block.btn-lg.btn-primary#on On
         .col-md-4
-          button.btn.btn-block.btn-lg.btn-danger#2 Off
+          button.btn.btn-block.btn-lg.btn-danger#off Off
       .row.voffset
         .col-md-6
           div#temperature Temperature:
@@ -24,7 +24,7 @@ html
       if (devices != '[]')
         each device in devices
           if (device.type == 'xbee')
-            .row
+            .row.voffset
               .col-md-4
                 div Sensor #{device.name}
               .col-md-4
