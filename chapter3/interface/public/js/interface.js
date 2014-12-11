@@ -44,41 +44,41 @@ $(document).ready(function() {
 
   // Click on buttons
   $("#1").click(function() {
-    $.get('/digital/12/1');
+    $.get('/my_RPi/digital/12/1');
   });
 
   $("#2").click(function() {
-    $.get('/digital/12/0');
+    $.get('/my_RPi/digital/12/0');
   });
   
   // Refresh sensor data
   refreshSensors();
   setInterval(refreshSensors, 5000);
   
-  // Refresh camera picture
-  setInterval(function() {
+  // // Refresh camera picture
+  // setInterval(function() {
     
-    // Take picture
-    $.get("/camera/snapshot");
+  //   // Take picture
+  //   $.get("/camera/snapshot");
   
-  }, 10000);
+  // }, 10000);
   
-  setInterval(function() {
+  // setInterval(function() {
  
-    // Reload picture
-    d = new Date();
-    $("#camera").attr("src","/pictures/image.jpg?" + d.getTime());
+  //   // Reload picture
+  //   d = new Date();
+  //   $("#camera").attr("src","/pictures/image.jpg?" + d.getTime());
   
-  }, 1000);
+  // }, 1000);
 
 });
 
 function refreshSensors() {
 
-  $.get('/temperature', function(json_data) {
+  $.get('/my_RPi/temperature', function(json_data) {
     $("#temperature").text('Temperature: ' + json_data.temperature + ' C');
 	
-	$.get('/humidity', function(json_data) {
+	$.get('/my_RPi/humidity', function(json_data) {
       $("#humidity").text('Humidity: ' + json_data.humidity + ' %');
     });
   });
