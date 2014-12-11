@@ -10,8 +10,8 @@ app.use(express.static(__dirname + '/public'));
 
 // node-aREST
 var rest = require("arest")(app);
-//rest.addDevice('xbee','/dev/ttyUSB0');
-rest.addDevice('http','192.168.1.104');
+rest.addDevice('xbee','/dev/ttyUSB0');
+rest.addDevice('http','localhost');
 
 // Interface routes
 app.get('/', function(req, res){

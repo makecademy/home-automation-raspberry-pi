@@ -18,7 +18,7 @@ app.get('/interface', function(req, res){
 var piREST = require('pi-arest')(app);
 
 // Raspberry Pi name & ID
-piREST.set_id('1');
+piREST.set_id('8kmgx3');
 piREST.set_name('my_RPi');
 
 // DHT sensor
