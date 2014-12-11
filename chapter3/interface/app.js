@@ -11,7 +11,7 @@ app.use(express.static(__dirname + '/public'));
 // node-aREST
 var rest = require("arest")(app);
 rest.addDevice('xbee','/dev/ttyUSB0');
-rest.addDevice('wifi','http://localhost:3000');
+rest.addDevice('http','http://localhost:3000');
 
 // Interface routes
 app.get('/', function(req, res){
