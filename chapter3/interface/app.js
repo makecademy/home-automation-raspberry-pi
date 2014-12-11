@@ -15,7 +15,8 @@ rest.addDevice('xbee','/dev/ttyUSB0');
 
 // Interface routes
 app.get('/interface', function(req, res){
-  res.render('interface');
+  var devices = rest.getDevices();
+  res.render('interface', {devices: devices});
 });
 
 // pi-aREST
