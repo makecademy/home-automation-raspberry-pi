@@ -9,6 +9,10 @@ app.set('view engine', 'jade');
 // Set public folder
 app.use(express.static(__dirname + '/public'));
 
+// node-aREST
+var rest = require("arest")(app);
+rest.addDevice('xbee','/dev/ttyUSB0');
+
 // Interface routes
 app.get('/interface', function(req, res){
   res.render('interface');
