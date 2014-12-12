@@ -1,0 +1,35 @@
+doctype
+html
+  head
+    title Raspberry Pi Interface
+    link(rel='stylesheet', href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css")
+    link(rel='stylesheet', href="/css/interface.css")
+    script(src="https://code.jquery.com/jquery-2.1.1.min.js")
+    script(src="/js/interface.js")
+  body
+    .container
+      h1 Raspberry Pi Interface
+      .row.voffset
+        .col-md-4
+          div Lamp
+        .col-md-4
+          button.btn.btn-block.btn-lg.btn-primary#on On
+        .col-md-4
+          button.btn.btn-block.btn-lg.btn-danger#off Off
+      .row.voffset
+        .col-md-6
+          div#temperature Temperature:
+        .col-md-6
+          div#humidity Humidity:
+      if (devices != '[]')
+        each device in devices
+          if (device.type == 'xbee')
+            .row.voffset
+              .col-md-4
+                div Sensor #{device.name}
+              .col-md-4
+                div.display(id=device.id)
+      .row.voffset
+        .col-md-6
+          img#camera(width=640, height=360)
+       

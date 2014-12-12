@@ -26,41 +26,14 @@ setTimeout(function(){
   // Get device
   rpi = rest.getDevice('my_RPi');
 
-  // Function to refresh data  
-  refreshMeasurements = function() {
-	  // Get temperature & humidity
-	  rpi.getVariable('temperature', function(error, response, body) {
-	    var temperature = body.temperature;
-	    
-	    rpi.getVariable('humidity', function(error, response, body) {
-	      var humidity = body.humidity;
-	      
-	      // Log on Dweet.io
-	      var dweet_request = 'https://dweet.io/dweet/for/' + 
-	      rpi.name + rpi.id + 
-	      '?temperature=' + temperature + 
-	      '&humidity=' + humidity;
-	      
-	      request(dweet_request, function(error, response, body){
-	        console.log(body);
-	      });
-	    
-	    });
-	  });
-  }
-
-  // Send data every 10 seconds
-  //refreshMeasurements();
-  //setInterval(refreshMeasurements, 10000);
-
   // Twitter
   var Twit = require('twit')
 
   var T = new Twit({
-    consumer_key:         '5uCNehkKI2Fo95LnnxUv2RYlB'
-	, consumer_secret:      'QyX7fGAnfqn69NyYsdf6TsE04kHJ1H1jlELrLmoAoYdPWeEASK'
-	, access_token:         '2917115452-VU0pgCqOOEnojy9vSKsqpTufgkTqVoAwYyzq3a8'
-	, access_token_secret:  'P3EL5bXMHxaFzJGjv3DwwvcyWPg53cGeWNG64aHPecypO'
+    consumer_key:         '...'
+	, consumer_secret:      '...'
+	, access_token:         '...'
+	, access_token_secret:  '...'
   });
 
   function checkTemperature() {
@@ -72,11 +45,11 @@ setTimeout(function(){
       	// Get date
       	var d = new Date();
       	var n = d.getTime();
-		var hour = d.getHours();
-		var min  = d.getMinutes();
-		var sec  = d.getSeconds();
+    		var hour = d.getHours();
+    		var min  = d.getMinutes();
+    		var sec  = d.getSeconds();
 
-		// Message
+		    // Message
         var message = 'Warning, it is getting cold! Temperature is ' + 
         temperature + ' C at ' + hour + ':' + min + ':' + sec + '.';
 
@@ -93,8 +66,8 @@ setTimeout(function(){
   }
 
   var last_alert_time = 0;
-  //checkTemperature();
-  //setInterval(checkTemperature, 10000);  
+  checkTemperature();
+  setInterval(checkTemperature, 10000);  
 
 }, 5000);
 
