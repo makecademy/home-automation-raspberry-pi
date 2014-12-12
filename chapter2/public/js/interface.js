@@ -2,11 +2,11 @@
 $(document).ready(function() {
 
   // Click on buttons
-  $("#1").click(function() {
+  $("#on").click(function() {
     $.get('/digital/12/1');
   });
 
-  $("#2").click(function() {
+  $("#off").click(function() {
     $.get('/digital/12/0');
   });
   
