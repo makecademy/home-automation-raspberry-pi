@@ -4,7 +4,8 @@ $(document).ready(function() {
   // Set target temperature
   $("#set").click(function() {
 
-    var target = $('target').val();
+    var target = $('#target').val();
+    console.log(target);
     $.get('/set?target=' + target);
 
   });
@@ -19,11 +20,16 @@ $(document).ready(function() {
 function refreshSensors() {
 
   $.get('/temperature', function(json_data) {
-    $("#temperature").text('Temperature: ' + json_data.temperature + ' C');
-  
-  $.get('/heater', function(json_data) {
-      $("#heater").text('Heater ' + json_data.heater);
+    $("#temperature").text('Current temperature: ' + json_data.temperature + ' C');  
     });
-  });
-  
+    
+    $.get('/target', function(data) {
+      $("#targetIndicator").text('Target temperature: ' + data.target + ' C');  
+    }); 
+    
+      $.get('/heater', function(json_data) {
+       $("#heater").text('Heater ' + json_data.heater);
+      });
+    
+ 
 }

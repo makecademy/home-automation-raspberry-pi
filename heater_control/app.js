@@ -7,15 +7,16 @@ var sensorLib = require('node-dht-sensor');
 var app = express();
 
 // View engine
+app.use(express.static(__dirname + '/public'));
+
+// View engine
 app.set('view engine', 'jade');
 
 // Temperature variables
 var currentTemperature;
-var targetTemperature;
+var targetTemperature = 20;
 var threshold = 1;
-
-// Set views
-app.use(express.static(path.join(__dirname, 'public')));
+var heaterStatus = false;
 
 // Interface
 app.get('/', function(req, res){
@@ -27,6 +28,10 @@ app.get('/temperature', function(req, res){
   res.json({temperature: currentTemperature}); 
 });
 
+app.get('/target', function(req, res){
+  res.json({target: targetTemperature}); 
+});
+
 app.get('/heater', function(req, res){
   if (heaterStatus == true) {
     res.json({heater: 'ON'}); 
@@ -36,11 +41,11 @@ app.get('/heater', function(req, res){
   }
 });
 
-app.get('set', function(req, res){
+app.get('/set', function(req, res){
 
   // Set target temp
-  console.log(req.params.target);
-  targetTemperature = req.params.target;
+  console.log(req.query.target);
+  targetTemperature = req.query.target;
 
 });
 
@@ -48,12 +53,13 @@ app.get('set', function(req, res){
 setInterval(function() {
 
   // If we crossed high threshold
-  if (currentTemperature > (targetTemperature + threshold)) {
+  if (parseInt(currentTemperature) > (targetTemperature + threshold)) {
 
     // Set heater off
     gpio.setup(7, gpio.DIR_OUT, function() {
       gpio.write(7, false, function(err) {
         if (err) throw err;
+        heaterStatus = false;
         console.log('Heater OFF');
        });
     });
@@ -61,12 +67,13 @@ setInterval(function() {
   }
 
   // If we crossed low threshold
-  if (currentTemperature < (targetTemperature - threshold)) {
+  if (parseInt(currentTemperature) < (targetTemperature - threshold)) {
 
     // Set heater off
     gpio.setup(7, gpio.DIR_OUT, function() {
       gpio.write(7, true, function(err) {
         if (err) throw err;
+        heaterStatus = true;
         console.log('Heater ON');
        });
     });
@@ -87,7 +94,7 @@ var dht_sensor = {
     },
     read: function () {
         var readout = sensorLib.read();
-        var currentTemperature = readout.temperature.toFixed(2);
+        currentTemperature = readout.temperature.toFixed(2);
 
         console.log('Temperature: ' + readout.temperature.toFixed(2) + 'C, ' +
             'humidity: ' + readout.humidity.toFixed(2) + '%');
