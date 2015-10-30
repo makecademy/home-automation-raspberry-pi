@@ -20,5 +20,5 @@ gpio.on('change', function(channel, value) {
     }
 });
 
-// Setup pin 23 as input
-gpio.setup(23, gpio.DIR_IN, gpio.EDGE_BOTH);
+// Setup pin 4 as input
+gpio.setup(4, gpio.DIR_IN, gpio.EDGE_BOTH);
