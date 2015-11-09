@@ -1,30 +1,9 @@
-// Imports
-var express = require('express');
-var request = require('request');
-var app = express();
-
-// View engine
-app.set('view engine', 'jade');
-
-// Set public folder
-app.use(express.static(__dirname + '/public'));
-
-// node-aREST
-var rest = require("arest")(app);
-rest.addDevice('xbee','/dev/ttyUSB0');
-rest.addDevice('http','localhost');
-
-// Interface routes
-app.get('/', function(req, res){
-  var devices = rest.getDevices();
-  res.render('interface', {devices: devices});
-});
+// Global variables
+var temperature;
+var humidity;
 
 // Automation
 setTimeout(function(){
-
-  // Get device
-  rpi = rest.getDevice('my_RPi');
 
   // Twitter
   var Twit = require('twit')
@@ -37,10 +16,8 @@ setTimeout(function(){
   });
 
   function checkTemperature() {
-    rpi.getVariable('temperature', function(error, response, body) {
-      var temperature = body.temperature;
-    
-      if (temperature < 22) {
+
+    if (temperature < 22) {
 
       	// Get date
       	var d = new Date();
@@ -50,7 +27,7 @@ setTimeout(function(){
     		var sec  = d.getSeconds();
 
 		    // Message
-        var message = 'Warning, it is getting cold! Temperature is ' + 
+        var message = 'Warning, it is getting cold! Temperature is ' +
         temperature + ' C at ' + hour + ':' + min + ':' + sec + '.';
 
         // Post message if more than 1 hour since last message
@@ -62,16 +39,36 @@ setTimeout(function(){
 	      });
         }
       }
-    });	
   }
 
   var last_alert_time = 0;
   checkTemperature();
-  setInterval(checkTemperature, 10000);  
+  setInterval(checkTemperature, 10000);
 
 }, 5000);
 
-// Start server
-var server = app.listen(3000, function() {
-    console.log('Listening on port %d', server.address().port);
-});
+// DHT sensor measurements
+var dht_sensor = {
+    initialize: function () {
+        return sensorLib.initialize(11, 23);
+    },
+    read: function () {
+        var readout = sensorLib.read();
+
+        temperature = readout.temperature.toFixed(2));
+        humidity = readout.humidity.toFixed(2));
+
+        console.log('Temperature: ' + readout.temperature.toFixed(2) + 'C, ' +
+            'humidity: ' + readout.humidity.toFixed(2) + '%');
+        setTimeout(function () {
+            dht_sensor.read();
+        }, 2000);
+    }
+};
+
+// Init sensor
+if (dht_sensor.initialize()) {
+    dht_sensor.read();
+} else {
+    console.warn('Failed to initialize sensor');
+}
